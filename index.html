@@ -5,86 +5,11 @@
   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
   crossorigin="anonymous"></script>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Local Weather</title>
-
-  <style>
-    body{
-      background-color: #eee;
-      //background-image: url(img/texture.jpg);
-      font-family: sans-serif;
-    }
-    #head{
-      background-color: #388e3c;
-      min-height: 20px;
-    }
-
-    #main{
-      background-color: #4caf50;
-      font-size: 40px;
-      color: white;
-      padding-top: 20px;
-      padding-bottom: 20px;
-    }
-    #main h4{
-      color: rgba(255,255,255,0.8);
-      margin-bottom: 90px;
-    }
-
-    #icon{
-      background-color: #cddc39;
-      width: 150px;
-      height: 150px;
-      border-radius: 75px;
-      margin: auto;
-      position: relative;
-      bottom: 75px;
-      text-align: center;
-      box-shadow: 5px 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-      transition: all 0.2s ease-in-out;
-      margin-bottom: -50px;
-    }
-    #icon:hover{
-      box-shadow: 0 6px 12px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23);
-      cursor: pointer;
-    }
-    #icon img{
-      margin: auto;
-      width: 100px;
-    }
-    #icon h3{
-      margin-top: -10px;
-      color: #388e3c;
-      font-weight: bold;
-    }
-
-    #details{
-      padding: 0;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #388e3c;
-    }
-    #details .col-xs-6{
-      border-top: 1px solid #c8e6c9;
-      color: #388e3c;
-      font-weight: bold;
-    }
-    #details .col-xs-6:nth-child(n+3){
-      border-bottom: 4px solid #c8e6c9;
-    }
-    #details .col-xs-6:nth-child(2n+1){
-      border-right: 1px solid #c8e6c9;
-    }
-    #details .large{
-      float: right;
-      font-size: 35px;
-    }
-    #details .col-xs-8{
-      margin-top: 28px;
-      margin-bottom: 2px;
-    }
-  </style>
 </head>
 <body>
   <div class="container">
@@ -151,85 +76,7 @@
   </div>
 
 
-  <script>
-  $("#icon").on('click', changeUnit);
-  $(window).on('resize', resizing);
+  <script src="script.js"></script>
 
-  var link,
-      icon,
-      temp,
-      city,
-      unit = "Celsius",
-      tempMin,
-      tempMax,
-      humidity,
-      pressure;
-
-  // Get the coordinates and execute weather() if the coordinates are available
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var baseURL = "http://api.openweathermap.org/data/2.5/weather?";
-      var coordinates = "lat=" + position.coords.latitude + "&lon=" + position.coords.longitude;
-      link = baseURL + coordinates  + "&APPID=cfdc05d02854f871e2eae7e3a0988b1f&units=metric";
-      weather();
-    }, function(error){
-      // Will not work in Firefox, but should work in Chrome
-      alert(error.message);
-    });
-  }
-
-  // Get the data from openweathermap and store it
-  function weather(){
-    $.getJSON(link, function(data){
-      console.log(data);
-      temp = data.main.temp;
-      icon = data.weather[0].icon;
-      city = data.name;
-      tempMin = data.main.temp_min;
-      tempMax = data.main.temp_max;
-      humidity = data.main.humidity;
-      pressure = data.main.pressure;
-    }).done(function(){
-      $("#city").html(city);
-      $("#icon").html("<img src='http://openweathermap.org/img/w/" + icon + ".png' /><h3>" + temp + " °C</h3>");
-
-      // Add details
-      $("#temperatureMin").html(tempMin);
-      $("#temperatureMax").html(tempMax);
-      $("#humidity").html(humidity);
-      $("#pressure").html(pressure);
-
-      //$("#name").html("<h5>" + city + "</h5>");
-      //$("#temperature").html(temp + " °C");
-      //$("#temperature").html($("#temperature").html() + "<div id='icon'><img src='http://openweathermap.org/img/w/" + icon + ".png' /></div>");
-    });
-  }
-
-  // Celsius to Fahrenheit and vice versa
-  function changeUnit(){
-    if(unit === "Celsius"){
-      unit = "Fahrenheit";
-      temp = Math.round((temp*(9/5) + 32)*100)/100;
-      $("#icon").html("<img src='http://openweathermap.org/img/w/" + icon + ".png' /><h3>" + temp + " °F</h3>");
-    }else{
-      unit = "Celsius";
-      temp = Math.round(((temp - 32) * (5/9))*100)/100;
-      $("#icon").html("<img src='http://openweathermap.org/img/w/" + icon + ".png' /><h3>" + temp + " °C</h3>");
-    }
-  }
-
-  function resizing(){
-    if($("#main").width() < 550){
-      $("#details .col-xs-8").css("margin-top", "45px");
-    }else{
-      $("#details .col-xs-8").css("margin-top", "28px");
-    }
-  }
-
-  // Set margin top at a start on small screens
-  resizing();
-
-
-  </script>
 </body>
 </html>
